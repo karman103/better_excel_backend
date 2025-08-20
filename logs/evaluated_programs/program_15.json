@@ -1,0 +1,95 @@
+{
+  "traces": [],
+  "train": [],
+  "demos": [
+    {
+      "augmented": true,
+      "question": "What is the Q3 2025 data?",
+      "columns": [
+        "Year",
+        "Date",
+        "Quarter",
+        "NetSales_Products",
+        "NetSales_Services",
+        "NetSales_Total",
+        "COG_Products",
+        "COG_Services",
+        "COG_Total",
+        "Gross_margin",
+        "OperatingExpase_RND",
+        "OperatingExpase_SGA",
+        "OperatingExpase_Total",
+        "Operating_income",
+        "Other_income_expanse",
+        "Income_before_provision_for_income_taxes",
+        "Provision_for_income_taxes",
+        "Net_income",
+        "Earnings_per_share_Basic",
+        "Earnings_per_share_Diluted",
+        "AssetsCurrent_Cash",
+        "AssetsCurrent_Marketable_securities",
+        "AssetsCurrent_Accounts_receivable",
+        "AssetsCurrent_Inventories",
+        "AssetsCurrent_non_trade_receivables",
+        "AssetsCurrent_Other",
+        "AssetsCurrent_Total",
+        "AssetsNC_Marketable_securities",
+        "AssetsNC_PPE",
+        "AssetsNC_Other",
+        "AssetsNC_Total",
+        "Assets_Total",
+        "LiabilitiesCurrent_Accounts payable",
+        "LiabilitiesCurrent_Other",
+        "LiabilitiesCurrent_Deferred_revenue",
+        "LiabilitiesCurrent_Commercial_paper",
+        "LiabilitiesCurrent_Term_debt",
+        "LiabilitiesCurrent_Total",
+        "LiabilitiesNC_Term_debt",
+        "LiabilitiesNC_Other",
+        "LiabilitiesNC_Total",
+        "Liabilities_Total",
+        "Shareholders_Equity_outstanding_respectively",
+        "Retained_earnings",
+        "Accumulated_other_comprehensive_income",
+        "Shareholders_Equity_Total",
+        "Total_liabilities_and_shareholders_equity",
+        "Stock_Price"
+      ],
+      "sample": [
+        "Year,Date,Quarter,NetSales_Products,NetSales_Services,NetSales_Total,COG_Products,COG_Services,COG_Total,Gross_margin,OperatingExpase_RND,OperatingExpase_SGA,OperatingExpase_Total,Operating_income,Other_income_expanse,Income_before_provision_for_income_taxes,Provision_for_income_taxes,Net_income,Earnings_per_share_Basic,Earnings_per_share_Diluted,AssetsCurrent_Cash,AssetsCurrent_Marketable_securities,AssetsCurrent_Accounts_receivable,AssetsCurrent_Inventories,AssetsCurrent_non_trade_receivables,AssetsCurrent_Other,AssetsCurrent_Total,AssetsNC_Marketable_securities,AssetsNC_PPE,AssetsNC_Other,AssetsNC_Total,Assets_Total,LiabilitiesCurrent_Accounts payable,LiabilitiesCurrent_Other,LiabilitiesCurrent_Deferred_revenue,LiabilitiesCurrent_Commercial_paper,LiabilitiesCurrent_Term_debt,LiabilitiesCurrent_Total,LiabilitiesNC_Term_debt,LiabilitiesNC_Other,LiabilitiesNC_Total,Liabilities_Total,Shareholders_Equity_outstanding_respectively,Retained_earnings,Accumulated_other_comprehensive_income,Shareholders_Equity_Total,Total_liabilities_and_shareholders_equity,Stock_Price",
+        "2023,09\/01\/2023,4,67184,22314,89498,42586,6485,49071,40427,7307,6151,13458,26969,29,26998,4042,22956,1.47,1.47,29965,31590,29508,31477,6331,14695,143566,100544,43715,64758,209017,352583,62611,58829,8061,5985,9822,145308,95281,49848,145129,290437,73812,-214,-11452,62146,352583,338.11",
+        "2023,06\/01\/2023,3,60584,21213,81797,39136,6248,45384,36413,7442,5973,13415,22998,-265,22733,2852,19881,1.27,1.26,28408,34074,19549,7351,19637,13640,122659,104061,43550,64768,212379,335038,46699,58897,8158,3993,7216,124963,98071,51730,149801,274764,70667,1408,-11801,60274,335038,335.92"
+      ],
+      "regex_json": "{\"regex\":\"^Q3\\\\s+2025,(?:\\\"[^\\\"]*\\\",){2}(?P<value>[^,]+)\"}"
+    }
+  ],
+  "signature": {
+    "instructions": "To generate a regex pattern that captures the specific cell value requested in a CSV line based on minimal context (column names + first three raw lines), follow these steps:\n\n1. Identify the row key from the question, such as 'Q3 2025', and anchor your regex to match this exact string at the beginning of the line.\n2. Use literal tokens or specific keys present in the question to further narrow down which CSV rows are relevant.\n3. Ensure that you can tolerate both quoted and unquoted cells by using a tolerant cell atom: `(?:\\\"[^\\\"]*\\\"|[^,]*)`.\n4. Capture the requested value (e.g., 'NetSales_Products') with a named group (?P<value>...). This should be placed right after matching columns that lead up to it.\n5. Make sure your regex matches only the relevant line(s) and captures exactly one cell's content as specified in the question.\n\nExample:\n- If the question asks for 'Q3 2025' NetSales_Products, start with `^Q3\\s+2025` (an exact match at line beginning).\n- Follow with a sequence of tolerant cells that lead up to the target column.\n- Capture the value in the named group (?P<value>...).\n\nOutput your regex pattern inside JSON like this: {\"regex\":\"YOUR_PATTERN\"}, where YOUR_PATTERN is the actual Python 're' compatible regex.",
+    "fields": [
+      {
+        "prefix": "Question:",
+        "description": "${question}"
+      },
+      {
+        "prefix": "Columns:",
+        "description": "${columns}"
+      },
+      {
+        "prefix": "Sample:",
+        "description": "${sample}"
+      },
+      {
+        "prefix": "Regex Json:",
+        "description": "${regex_json}"
+      }
+    ]
+  },
+  "lm": null,
+  "metadata": {
+    "dependency_versions": {
+      "python": "3.10",
+      "dspy": "3.0.1",
+      "cloudpickle": "3.1"
+    }
+  }
+}

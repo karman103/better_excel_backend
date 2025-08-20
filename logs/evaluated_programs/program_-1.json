@@ -1,0 +1,34 @@
+{
+  "traces": [],
+  "train": [],
+  "demos": [],
+  "signature": {
+    "instructions": "Output exactly one JSON object and nothing else.\n\nGoal:\nGiven a natural-language question about a CSV and only minimal context (column names + the first three raw lines),\nproduce a SINGLE Python 're' compatible regex that:\n1) Matches the relevant CSV line(s), and\n2) Captures the requested cell value in ONE named group (?P<value>...).\n\nConstraints:\n- Engine: Python 're' ONLY (no \\K, no atomic groups, no variable-length lookbehind).\n- Prefer literal tokens present in the question (e.g., exact keys like dates or ids).\n- If a specific row key is present (e.g., a date), anchor with ^KEY, at line start.\n- Cells may be quoted or unquoted; a tolerant cell atom is allowed: (?:\\\"[^\\\"]*\\\"|[^,]*)\n- For quoted-or-not values, capture with optional quotes: \\\"?(?P<value>[^\\\",]+)\\\"?\n- Return JSON in this exact form: {\"regex\":\"YOUR_PATTERN\"}",
+    "fields": [
+      {
+        "prefix": "Question:",
+        "description": "${question}"
+      },
+      {
+        "prefix": "Columns:",
+        "description": "${columns}"
+      },
+      {
+        "prefix": "Sample:",
+        "description": "${sample}"
+      },
+      {
+        "prefix": "Regex Json:",
+        "description": "${regex_json}"
+      }
+    ]
+  },
+  "lm": null,
+  "metadata": {
+    "dependency_versions": {
+      "python": "3.10",
+      "dspy": "3.0.1",
+      "cloudpickle": "3.1"
+    }
+  }
+}

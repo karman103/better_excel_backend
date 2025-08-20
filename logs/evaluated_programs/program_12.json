@@ -1,0 +1,34 @@
+{
+  "traces": [],
+  "train": [],
+  "demos": [],
+  "signature": {
+    "instructions": "To generate a regex pattern that captures the specific cell value requested in a CSV line based on minimal context (column names + first three raw lines), follow these steps:\n\n1. Identify the row key from the question, such as 'Q3 2025', and anchor your regex to match this exact string at the beginning of the line.\n2. Use literal tokens or specific keys present in the question to further narrow down which CSV rows are relevant.\n3. Ensure that you can tolerate both quoted and unquoted cells by using a tolerant cell atom: `(?:\\\"[^\\\"]*\\\"|[^,]*)`.\n4. Capture the requested value (e.g., 'NetSales_Products') with a named group (?P<value>...). This should be placed right after matching columns that lead up to it.\n5. Make sure your regex matches only the relevant line(s) and captures exactly one cell's content as specified in the question.\n\nExample:\n- If the question asks for 'Q3 2025' NetSales_Products, start with `^Q3\\s+2025` (an exact match at line beginning).\n- Follow with a sequence of tolerant cells that lead up to the target column.\n- Capture the value in the named group (?P<value>...).\n\nOutput your regex pattern inside JSON like this: {\"regex\":\"YOUR_PATTERN\"}, where YOUR_PATTERN is the actual Python 're' compatible regex.",
+    "fields": [
+      {
+        "prefix": "Question:",
+        "description": "${question}"
+      },
+      {
+        "prefix": "Columns:",
+        "description": "${columns}"
+      },
+      {
+        "prefix": "Sample:",
+        "description": "${sample}"
+      },
+      {
+        "prefix": "Regex Json:",
+        "description": "${regex_json}"
+      }
+    ]
+  },
+  "lm": null,
+  "metadata": {
+    "dependency_versions": {
+      "python": "3.10",
+      "dspy": "3.0.1",
+      "cloudpickle": "3.1"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "traces": [],
+  "train": [],
+  "demos": [
+    {
+      "sentence": "Say hello world",
+      "answer": "print('Hello, world!')"
+    }
+  ],
+  "signature": {
+    "instructions": "Please provide a detailed pseudo-code or description of the task that needs to be performed by the 'Predict' module. This information is necessary to create an effective instruction for translating English instructions into Python code, specifically using print statements as specified in the dataset_description.",
+    "fields": [
+      {
+        "prefix": "Sentence:",
+        "description": "${sentence}"
+      },
+      {
+        "prefix": "Answer:",
+        "description": "${answer}"
+      }
+    ]
+  },
+  "lm": null,
+  "metadata": {
+    "dependency_versions": {
+      "python": "3.10",
+      "dspy": "3.0.1",
+      "cloudpickle": "3.1"
+    }
+  }
+}

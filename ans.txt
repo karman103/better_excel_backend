@@ -1,0 +1,48 @@
+
+You will output exactly one JSON object and nothing else.
+
+Goal:
+Given a natural-language question about a CSV and minimal schema context, produce a SINGLE Python 're' compatible regex pattern that:
+1) Matches the CSV row(s) that answer the question, and
+2) Captures the requested field value in a single named group called (?P<value>...).
+
+Context:
+- Question: what is the NetSales for 2022 quarter 3
+- Column names: Available columns: "Year", "Date", "Quarter", "NetSales_Products", "NetSales_Services", "NetSales_Total", "COG_Products", "COG_Services", "COG_Total", "Gross_margin", "OperatingExpase_RND", "OperatingExpase_SGA", "OperatingExpase_Total", "Operating_income", "Other_income_expanse", "Income_before_provision_for_income_taxes", "Provision_for_income_taxes", "Net_income", "Earnings_per_share_Basic", "Earnings_per_share_Diluted", "AssetsCurrent_Cash", "AssetsCurrent_Marketable_securities", "AssetsCurrent_Accounts_receivable", "AssetsCurrent_Inventories", "AssetsCurrent_non_trade_receivables", "AssetsCurrent_Other", "AssetsCurrent_Total", "AssetsNC_Marketable_securities", "AssetsNC_PPE", "AssetsNC_Other", "AssetsNC_Total", "Assets_Total", "LiabilitiesCurrent_Accounts payable", "LiabilitiesCurrent_Other", "LiabilitiesCurrent_Deferred_revenue", "LiabilitiesCurrent_Commercial_paper", "LiabilitiesCurrent_Term_debt", "LiabilitiesCurrent_Total", "LiabilitiesNC_Term_debt", "LiabilitiesNC_Other", "LiabilitiesNC_Total", "Liabilities_Total", "Shareholders_Equity_outstanding_respectively", "Retained_earnings", "Accumulated_other_comprehensive_income", "Shareholders_Equity_Total", "Total_liabilities_and_shareholders_equity", "Stock_Price"
+
+- CSV sample (header + two rows):
+  ['Year,Date,Quarter,NetSales_Products,NetSales_Services,NetSales_Total,COG_Products,COG_Services,COG_Total,Gross_margin,OperatingExpase_RND,OperatingExpase_SGA,OperatingExpase_Total,Operating_income,Other_income_expanse,Income_before_provision_for_income_taxes,Provision_for_income_taxes,Net_income,Earnings_per_share_Basic,Earnings_per_share_Diluted,AssetsCurrent_Cash,AssetsCurrent_Marketable_securities,AssetsCurrent_Accounts_receivable,AssetsCurrent_Inventories,AssetsCurrent_non_trade_receivables,AssetsCurrent_Other,AssetsCurrent_Total,AssetsNC_Marketable_securities,AssetsNC_PPE,AssetsNC_Other,AssetsNC_Total,Assets_Total,LiabilitiesCurrent_Accounts payable,LiabilitiesCurrent_Other,LiabilitiesCurrent_Deferred_revenue,LiabilitiesCurrent_Commercial_paper,LiabilitiesCurrent_Term_debt,LiabilitiesCurrent_Total,LiabilitiesNC_Term_debt,LiabilitiesNC_Other,LiabilitiesNC_Total,Liabilities_Total,Shareholders_Equity_outstanding_respectively,Retained_earnings,Accumulated_other_comprehensive_income,Shareholders_Equity_Total,Total_liabilities_and_shareholders_equity,Stock_Price\n', '2023,09/01/2023,4,67184,22314,89498,42586,6485,49071,40427,7307,6151,13458,26969,29,26998,4042,22956,1.47,1.47,29965,31590,29508,31477,6331,14695,143566,100544,43715,64758,209017,352583,62611,58829,8061,5985,9822,145308,95281,49848,145129,290437,73812,-214,-11452,62146,352583,338.11\n', '2023,06/01/2023,3,60584,21213,81797,39136,6248,45384,36413,7442,5973,13415,22998,-265,22733,2852,19881,1.27,1.26,28408,34074,19549,7351,19637,13640,122659,104061,43550,64768,212379,335038,46699,58897,8158,3993,7216,124963,98071,51730,149801,274764,70667,1408,-11801,60274,335038,335.92\n']
+
+Assumptions & constraints:
+- Engine: Python 're' (no PCRE-only syntax). Do NOT use '\K', atomic groups, or variable-length lookbehind.
+- CSV fields may be quoted (e.g., "1,289.62") or unquoted without internal commas.
+- Prefer literal tokens present in the question (e.g., an exact MM/DD/YYYY date, exact column name).
+- Avoid over-anchoring unless necessary; if a specific date is in the question, anchor line start with that date.
+- Use a SINGLE pattern.
+- Use exactly one named capture group: (?P<value>...), capturing ONLY the requested cell value.
+- Do NOT include flags; the consumer code sets flags.
+- Output format MUST be:
+  {"regex": "YOUR_PATTERN_HERE"}
+
+Guidelines for constructing the pattern:
+- If the question asks for a value by date and column (e.g., "What is the Close on 07/08/2024?"):
+  - Start-of-line anchor the date: ^07/08/2024,
+  - Then skip columns using a tolerant "CSV cell" atom: (?:"[^"]*"|[^,]*)
+  - Repeat that atom (with trailing commas) to reach the target column, then capture it.
+  - Example shape (for Close = 5th column):
+    ^07/08/2024,(?:"[^"]*"|[^,]*),(?:"[^"]*"|[^,]*),(?:"[^"]*"|[^,]*),"?(?P<value>[^",]+)"?
+- If the question names a column but not a date, match lines containing that column context and capture accordingly.
+- If multiple rows may match, the same pattern should match each row, capturing the value from each.
+
+Examples (illustrative):
+Q: "What is the Close on 07/08/2024?"
+RETURNS:
+{"regex": "^07/08/2024,(?:\"[^\"]*\"|[^,]*),(?:\"[^\"]*\"|[^,]*),(?:\"[^\"]*\"|[^,]*),\"?(?P<value>[^\",]+)\"?"}
+
+Q: "Give me the Volume on 09/03/2024"
+RETURNS:
+{"regex": "^09/03/2024,(?:\"[^\"]*\"|[^,]*),(?:\"[^\"]*\"|[^,]*),(?:\"[^\"]*\"|[^,]*),(?:\"[^\"]*\"|[^,]*),\"?(?P<value>[^\",]+)\"?"}
+
+Now produce ONLY the JSON object with the single key "regex".
+
+I cannot find the NetSales value for 2022 quarter 3 with the given information.

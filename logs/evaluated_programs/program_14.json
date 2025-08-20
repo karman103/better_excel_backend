@@ -1,0 +1,34 @@
+{
+  "traces": [],
+  "train": [],
+  "demos": [],
+  "signature": {
+    "instructions": "Given a natural-language question about finding Q3 2025 data in a CSV file, create a Python 're' compatible regex pattern that matches the relevant line starting with \"Q3 2025,\" and captures the requested cell value (NetSales_Total) using exactly one named group (?P<value>). The columns provided are ['Year', 'Date', 'Quarter', 'NetSales_Products', 'NetSales_Services', 'NetSales_Total', ...]. Ensure that the pattern is tolerant of quoted or unquoted values and returns JSON in the form {\"regex\":\"YOUR_PATTERN\"}.",
+    "fields": [
+      {
+        "prefix": "Question:",
+        "description": "${question}"
+      },
+      {
+        "prefix": "Columns:",
+        "description": "${columns}"
+      },
+      {
+        "prefix": "Sample:",
+        "description": "${sample}"
+      },
+      {
+        "prefix": "Regex Json:",
+        "description": "${regex_json}"
+      }
+    ]
+  },
+  "lm": null,
+  "metadata": {
+    "dependency_versions": {
+      "python": "3.10",
+      "dspy": "3.0.1",
+      "cloudpickle": "3.1"
+    }
+  }
+}
